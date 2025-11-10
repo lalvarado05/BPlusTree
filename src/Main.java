@@ -5,31 +5,31 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Bplus arbol = null;
-        
+
         System.out.println("=== Árbol B+ ===");
         System.out.println("Bienvenido al sistema de gestión de árbol B+");
-        
+
         System.out.print("\nIngrese el orden del árbol (mínimo 3): ");
         int orden = scanner.nextInt();
         scanner.nextLine();
-        if(orden < 3) {
+        if (orden < 3) {
             System.out.println("El orden debe ser al menos 3. Se usará orden 3.");
             orden = 3;
         }
         arbol = new Bplus(orden);
         System.out.println("Árbol B+ creado con orden " + orden + ".");
-        
+
         boolean continuar = true;
-        while(continuar) {
+        while (continuar) {
             limpiarConsola();
             menu();
             System.out.print("\nSeleccione una opción: ");
             int opcion = scanner.nextInt();
             scanner.nextLine();
-            
+
             limpiarConsola();
-            
-            switch(opcion) {
+
+            switch (opcion) {
                 case 1:
                     System.out.print("Ingrese la clave (número entero): ");
                     int clave = scanner.nextInt();
@@ -39,31 +39,31 @@ public class Main {
                     arbol.insertar(clave, valor);
                     System.out.println("\nElemento insertado correctamente.");
                     break;
-                    
+
                 case 2:
                     System.out.print("Ingrese la clave a buscar: ");
                     int claveBuscar = scanner.nextInt();
                     scanner.nextLine();
                     String resultado = arbol.buscar(claveBuscar);
-                    if(resultado != null) {
+                    if (resultado != null) {
                         System.out.println("\nClave encontrada. Valor: " + resultado);
                     } else {
                         System.out.println("\nClave no encontrada.");
                     }
                     break;
-                    
+
                 case 3:
                     System.out.print("Ingrese la clave a eliminar: ");
                     int claveEliminar = scanner.nextInt();
                     scanner.nextLine();
                     boolean eliminado = arbol.eliminar(claveEliminar);
-                    if(eliminado) {
+                    if (eliminado) {
                         System.out.println("\nClave eliminada correctamente.");
                     } else {
                         System.out.println("\nClave no encontrada para eliminar.");
                     }
                     break;
-                    
+
                 case 4:
                     System.out.print("Ingrese la clave de inicio: ");
                     int claveInicio = scanner.nextInt();
@@ -73,37 +73,56 @@ public class Main {
                     System.out.println("\nRecorrido desde la clave " + claveInicio + ":");
                     arbol.recorrer(claveInicio, n);
                     break;
-                    
+
                 case 5:
                     System.out.println("Estructura del árbol:\n");
                     arbol.imprimirArbol();
                     break;
-                    
+
                 case 6:
                     continuar = false;
                     System.out.println("¡Hasta luego!");
                     break;
-                    
+
                 default:
                     System.out.println("Opción no válida. Por favor, seleccione una opción del 1 al 6.");
                     scanner.nextLine();
                     break;
             }
-            
-            if(continuar) {
+
+            if (continuar) {
                 System.out.println("\nPresione Enter para continuar...");
                 scanner.nextLine();
             }
         }
-        
+
         scanner.close();
     }
-    
+
     private static void limpiarConsola() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        // Sacado de
+        // https://stackoverflow.com/questions/2979383/how-to-clear-the-console-using-java
+        try {
+            final String os = System.getProperty("os.name");
+
+            if (os.contains("Windows")) {
+                // "cls" is an internal command of cmd.exe, so run it via cmd /c
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // On UNIX-like systems, clear is usually an external command
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (final InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            // Interrupted while waiting for the clear process - ignore further action
+        } catch (final Exception e) {
+            // If anything goes wrong (command not found, IO error, security), fall back to
+            // printing newlines
+            for (int i = 0; i < 50; i++)
+                System.out.println();
+        }
     }
-    
+
     private static void menu() {
         System.out.println("========================================");
         System.out.println("           MENÚ PRINCIPAL");

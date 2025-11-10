@@ -99,7 +99,7 @@ public class Node {
             // en hojas se mantiene la clave en ambos lados
             nuevoNodo.setKeys(new ArrayList<>(this.keys.subList(mitad, this.keys.size())));
             nuevoNodo.setValores(new ArrayList<>(this.valores.subList(mitad, this.valores.size())));
-            
+
             this.keys = new ArrayList<>(this.keys.subList(0, mitad));
             this.valores = new ArrayList<>(this.valores.subList(0, mitad));
 
